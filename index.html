@@ -1,160 +1,121 @@
 # fl02<!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<title>연애 스타일 테스트</title>
-<style>
-    body {
-        font-family: 'Arial', sans-serif;
-        background: #f5f7fa;
-        text-align: center;
-        padding: 40px;
-    }
+  <meta charset="UTF-8">
+  <title>고설아 포트폴리오</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family: 'Arial'; }
+    body { background:#f5f7fa; overflow-x:hidden; }
 
     .container {
-        max-width: 500px;
-        margin: auto;
-        background: white;
-        padding: 30px;
-        border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      display:flex;
+      height:100vh;
+    }
+
+    .left {
+      width:50%;
+      background:linear-gradient(135deg,#6a8dff,#3f5bd5);
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+
+    .left img {
+      width:70%;
+      border-radius:15px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .right {
+      width:50%;
+      padding:80px;
+      background:white;
     }
 
     h1 {
-        margin-bottom: 20px;
+      font-size:48px;
+      color:#3f5bd5;
+      margin-bottom:20px;
+      opacity:0;
     }
 
-    .question {
-        font-size: 18px;
-        margin-bottom: 20px;
+    .info {
+      margin-bottom:40px;
+      opacity:0;
     }
 
-    .btn {
-        display: block;
-        margin: 10px 0;
-        padding: 12px;
-        border: none;
-        border-radius: 10px;
-        background: #4CAF50;
-        color: white;
-        cursor: pointer;
-        transition: 0.3s;
+    .info p {
+      font-size:18px;
+      margin-bottom:10px;
     }
 
-    .btn:hover {
-        background: #45a049;
+    .cards {
+      display:flex;
+      gap:20px;
     }
 
-    .result {
-        font-size: 20px;
-        margin-top: 20px;
+    .card {
+      flex:1;
+      padding:20px;
+      border-radius:15px;
+      background:#f0f3ff;
+      text-align:center;
+      opacity:0;
+      transform:translateY(50px);
     }
-</style>
+
+    .card h3 {
+      margin-bottom:10px;
+      color:#3f5bd5;
+    }
+
+  </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>💖 연애 스타일 테스트</h1>
-    <div id="quiz">
-        <div class="question" id="question"></div>
-        <div id="answers"></div>
+  <div class="left">
+    <img src="/mnt/data/c1156e80-2e9e-408c-bf05-549739121921.png" alt="portfolio">
+  </div>
+
+  <div class="right">
+    <h1>PORTFOLIO</h1>
+
+    <div class="info">
+      <p><strong>이름:</strong> 고설아</p>
+      <p><strong>학교:</strong> 신구대학교</p>
+      <p><strong>학년:</strong> 1학년</p>
     </div>
-    <div id="result" class="result"></div>
+
+    <div class="cards">
+      <div class="card">
+        <h3>나에 대해</h3>
+        <p>성실하고 배우는 것을 좋아합니다.</p>
+      </div>
+      <div class="card">
+        <h3>전공</h3>
+        <p>회계세무학과</p>
+      </div>
+      <div class="card">
+        <h3>목표</h3>
+        <p>회계세무사</p>
+      </div>
+    </div>
+
+  </div>
 </div>
 
 <script>
-const questions = [
-    {
-        question: "데이트 스타일은?",
-        answers: [
-            { text: "계획적으로 움직인다", score: 2 },
-            { text: "즉흥적으로 즐긴다", score: 1 }
-        ]
-    },
-    {
-        question: "연락 스타일은?",
-        answers: [
-            { text: "자주 연락해야 안정됨", score: 2 },
-            { text: "적당한 거리 유지", score: 1 }
-        ]
-    },
-    {
-        question: "싸웠을 때 나는?",
-        answers: [
-            { text: "바로 풀고 싶다", score: 2 },
-            { text: "시간이 필요하다", score: 1 }
-        ]
-    },
-    {
-        question: "애정 표현은?",
-        answers: [
-            { text: "말과 행동으로 많이 한다", score: 2 },
-            { text: "필요할 때만 한다", score: 1 }
-        ]
-    },
-    {
-        question: "연애에서 중요한 것은?",
-        answers: [
-            { text: "안정감", score: 2 },
-            { text: "자유로움", score: 1 }
-        ]
-    }
-];
-
-let currentQuestion = 0;
-let totalScore = 0;
-
-function showQuestion() {
-    const q = questions[currentQuestion];
-    document.getElementById("question").innerText = q.question;
-    
-    const answersDiv = document.getElementById("answers");
-    answersDiv.innerHTML = "";
-
-    q.answers.forEach(answer => {
-        const btn = document.createElement("button");
-        btn.innerText = answer.text;
-        btn.className = "btn";
-        btn.onclick = () => selectAnswer(answer.score);
-        answersDiv.appendChild(btn);
-    });
-}
-
-function selectAnswer(score) {
-    totalScore += score;
-    currentQuestion++;
-
-    if (currentQuestion < questions.length) {
-        showQuestion();
-    } else {
-        showResult();
-    }
-}
-
-function showResult() {
-    document.getElementById("quiz").style.display = "none";
-
-    let resultText = "";
-    let matchStyle = "";
-
-    if (totalScore >= 8) {
-        resultText = "💞 당신은 '헌신형 연애 스타일'";
-        matchStyle = "👉 잘 맞는 스타일: 자유로운 성향 (균형을 맞춰줌)";
-    } else if (totalScore >= 6) {
-        resultText = "💘 당신은 '균형형 연애 스타일'";
-        matchStyle = "👉 잘 맞는 스타일: 비슷한 균형형";
-    } else {
-        resultText = "💫 당신은 '자유로운 연애 스타일'";
-        matchStyle = "👉 잘 맞는 스타일: 안정감을 주는 헌신형";
-    }
-
-    document.getElementById("result").innerHTML = `
-        <p>${resultText}</p>
-        <p>${matchStyle}</p>
-    `;
-}
-
-showQuestion();
+  gsap.to("h1", {opacity:1, y:0, duration:1, delay:0.5});
+  gsap.to(".info", {opacity:1, y:0, duration:1, delay:1});
+  gsap.to(".card", {
+    opacity:1,
+    y:0,
+    duration:1,
+    stagger:0.3,
+    delay:1.5
+  });
 </script>
 
 </body>
