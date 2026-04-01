@@ -1,0 +1,161 @@
+# fl02<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>연애 스타일 테스트</title>
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background: #f5f7fa;
+        text-align: center;
+        padding: 40px;
+    }
+
+    .container {
+        max-width: 500px;
+        margin: auto;
+        background: white;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+        margin-bottom: 20px;
+    }
+
+    .question {
+        font-size: 18px;
+        margin-bottom: 20px;
+    }
+
+    .btn {
+        display: block;
+        margin: 10px 0;
+        padding: 12px;
+        border: none;
+        border-radius: 10px;
+        background: #4CAF50;
+        color: white;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .btn:hover {
+        background: #45a049;
+    }
+
+    .result {
+        font-size: 20px;
+        margin-top: 20px;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>💖 연애 스타일 테스트</h1>
+    <div id="quiz">
+        <div class="question" id="question"></div>
+        <div id="answers"></div>
+    </div>
+    <div id="result" class="result"></div>
+</div>
+
+<script>
+const questions = [
+    {
+        question: "데이트 스타일은?",
+        answers: [
+            { text: "계획적으로 움직인다", score: 2 },
+            { text: "즉흥적으로 즐긴다", score: 1 }
+        ]
+    },
+    {
+        question: "연락 스타일은?",
+        answers: [
+            { text: "자주 연락해야 안정됨", score: 2 },
+            { text: "적당한 거리 유지", score: 1 }
+        ]
+    },
+    {
+        question: "싸웠을 때 나는?",
+        answers: [
+            { text: "바로 풀고 싶다", score: 2 },
+            { text: "시간이 필요하다", score: 1 }
+        ]
+    },
+    {
+        question: "애정 표현은?",
+        answers: [
+            { text: "말과 행동으로 많이 한다", score: 2 },
+            { text: "필요할 때만 한다", score: 1 }
+        ]
+    },
+    {
+        question: "연애에서 중요한 것은?",
+        answers: [
+            { text: "안정감", score: 2 },
+            { text: "자유로움", score: 1 }
+        ]
+    }
+];
+
+let currentQuestion = 0;
+let totalScore = 0;
+
+function showQuestion() {
+    const q = questions[currentQuestion];
+    document.getElementById("question").innerText = q.question;
+    
+    const answersDiv = document.getElementById("answers");
+    answersDiv.innerHTML = "";
+
+    q.answers.forEach(answer => {
+        const btn = document.createElement("button");
+        btn.innerText = answer.text;
+        btn.className = "btn";
+        btn.onclick = () => selectAnswer(answer.score);
+        answersDiv.appendChild(btn);
+    });
+}
+
+function selectAnswer(score) {
+    totalScore += score;
+    currentQuestion++;
+
+    if (currentQuestion < questions.length) {
+        showQuestion();
+    } else {
+        showResult();
+    }
+}
+
+function showResult() {
+    document.getElementById("quiz").style.display = "none";
+
+    let resultText = "";
+    let matchStyle = "";
+
+    if (totalScore >= 8) {
+        resultText = "💞 당신은 '헌신형 연애 스타일'";
+        matchStyle = "👉 잘 맞는 스타일: 자유로운 성향 (균형을 맞춰줌)";
+    } else if (totalScore >= 6) {
+        resultText = "💘 당신은 '균형형 연애 스타일'";
+        matchStyle = "👉 잘 맞는 스타일: 비슷한 균형형";
+    } else {
+        resultText = "💫 당신은 '자유로운 연애 스타일'";
+        matchStyle = "👉 잘 맞는 스타일: 안정감을 주는 헌신형";
+    }
+
+    document.getElementById("result").innerHTML = `
+        <p>${resultText}</p>
+        <p>${matchStyle}</p>
+    `;
+}
+
+showQuestion();
+</script>
+
+</body>
+</html>
